@@ -35,9 +35,27 @@
 #####################################################################################
 #   Fn Write-Status
 #####################################################################################
-Function Write-Status ($Message){
-    Write-Host `n -NoNewline
-    Write-Host -ForegroundColor Black -BackgroundColor White "   $Message   "
+Function Write-Status {
+    Param(
+        [string]$Message = $Message,
+        [switch]$NoNewLine,
+        [switch]$Warning
+    )
+
+    if ($Warning) {
+        $FColor = "Yellow"
+        $BColor = "Black"
+    } Else {
+        $FColor = "Black"
+        $BColor = "White"
+    }
+
+    if ($NoNewLine) {
+        Write-Host -ForegroundColor $FColor -BackgroundColor $BColor " $Message " -NoNewline
+    } Else {
+        Write-Host `n -NoNewline
+        Write-Host -ForegroundColor $FColor -BackgroundColor $BColor "   $Message   "
+    }
 }
 
 <#
