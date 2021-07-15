@@ -64,8 +64,8 @@ Function Get-InputFile(){
                 $CustomFilePath = Read-Host
 
                 Switch ($CustomFilePath) {
-                    "Exit" {Write-Status "Cancelling script"; Exit}
-                    "X" {Write-Status "Cancelling script"; Exit}
+                    "Exit" {Write-Host "Cancelling script"; Exit}
+                    "X" {Write-Host "Cancelling script"; Exit}
                     default {
                         if (Test-Path $CustomFilePath) {
                             $InputFile = $CustomFilePath
@@ -78,8 +78,8 @@ Function Get-InputFile(){
                             ; Break}
                 }
             }
-            "Exit" {Write-Status "Cancelling script"; Exit}
-            "X" {Write-Status "Cancelling script"; Exit}
+            "Exit" {Write-Host "Cancelling script"; Exit}
+            "X" {Write-Host "Cancelling script"; Exit}
             default {$Status = "error"; break}
         }
         
