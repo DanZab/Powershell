@@ -2,9 +2,10 @@
 #   Fn Get-InputFile
 #####################################################################################
 <#
+    Dynamically generates a list of available input files to select from.
     Returns a value containing the path to the selected Input file.
-    Can update $InputFolderPath if necessary, by default it uses the input subdirectory
-    from the location the script is ran from.
+    Can update $InputFolderPath if necessary, by default it uses the input 
+    subdirectory from the location the script is ran from.
     Example of use (if input file was in CSV form):
         $InputFile = Get-InputFile
         $MyInputArray = Import-CSV $InputFile
