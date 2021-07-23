@@ -1,4 +1,4 @@
-﻿<#
+<#
 .COPYRIGHT
 Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
 See LICENSE in the project root for license information.
@@ -54,6 +54,7 @@ $userUpn = New-Object "System.Net.Mail.MailAddress" -ArgumentList $User
 $tenant = $userUpn.Host
 
 Write-Host "Checking for AzureAD module..."
+Write-Host
 
     $AadModule = Get-Module -Name "AzureAD" -ListAvailable
 
@@ -658,6 +659,12 @@ if($tokens){
             $FinalList = @()
 
             ForEach ($Device in $DeviceList) {
+                If ($null -eq $id) {
+                    $AssignedTokenName = $Device.Token
+                    $SelectedToken = $tokens | Where-Object { $_.TokenName -eq "$AssignedTokenName" }
+                    $id = $SelectedToken | Select-Object -ExpandProperty id
+                }
+
                 Write-Host "Assigning $($Device.DeviceSerialNumber) to $($Device.Token) $($Device.Profile)"
                 $DeviceSerial = $Device.DeviceSerialNumber
                 $DeviceCheck = Get-IntuneDevice $DeviceSerial
