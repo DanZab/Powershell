@@ -1,4 +1,7 @@
-﻿Function Get-InputFileDialogBox {
+﻿# This function will generate a File Explorer window to select your input file
+ # Allows you to specify the file type filter and default directory
+ 
+ Function Get-InputFileDialogBox {
     Param(
         [string]$DefaultPath = "C:\",
         [string]$FileTypeFilter
