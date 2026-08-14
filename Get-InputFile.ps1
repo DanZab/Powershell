@@ -9,12 +9,36 @@
     Example of use (if input file was in CSV form):
         $InputFile = Get-InputFile
         $MyInputArray = Import-CSV $InputFile
+
+    Parameters:
+    Directory = Specifies the folder with the file to select, defaults to $ScriptDirectory\input
+    Filter = Filters the files you can choose from, ex. "-Filter "*.csv"" for only csv files
+    Prompt = Allows for a custom prompt message like "Select your CSV file" instead of default "Please choose your input file"
+    ClearScreen = Clears the console screen when the menu appears. Ex, "Get-Inputfile -ClearScreen"
 #>
 
-Function Get-InputFile(){
-    $InputFolderPath = "$((Get-Location).Path)\input"
+Function Get-InputFile {
+    Param (
+        [Alias('dir')]
+        [string]$Directory = "$PSScriptRoot\input",
+        [Alias('f')]
+        [string]$Filter = "*",
+        [Alias('p')]
+        [string]$Prompt = "Please choose your input file",
+        [Alias('c')]
+        [switch]$ClearScreen
+
+    )
+
+    If ($ClearScreen) {Clear-Host}
+
+    Function Write-Prompt ($char) { Write-Host -ForegroundColor Black -BackgroundColor White " $char " -NoNewline }
+
+    If (Test-Path $Directory) {$InputFolderPath = "$Directory"}
+    Else {Throw "Specified location $Directory does not exist"}
+
     Try {
-        $FileList = Get-ChildItem $InputFolderPath
+        $FileList = Get-ChildItem $InputFolderPath -Filter $Filter
     }
     Catch {
         Write-Host -ForegroundColor Red "Input folder not found at " -NoNewline
@@ -25,20 +49,19 @@ Function Get-InputFile(){
 
     Do {
         If ($FileList -ne "none") {
-            Write-Host "Pleaes choose your input file: "
+            Write-Host
+            Write-Host -ForegroundColor Green "$($Prompt): "
             For ($i=0; $i -le ($FileList.Count - 1); $I++){
-                Write-Host -BackgroundColor White " " -NoNewline
-                Write-Host -ForegroundColor Black -BackgroundColor White ($i + 1) -NoNewline
-                Write-Host -BackgroundColor White " " -NoNewline
-                Write-Host " " -NoNewline
-                Write-Host $FileList[$i]
+                Write-Prompt "$($i + 1)"
+                Write-Host " $($FileList[$i])"
             }
-            Write-Host -ForegroundColor Black -BackgroundColor White " F " -NoNewline
+            Write-Host 
+            Write-Prompt "F"
             Write-Host " to enter custom file path"
             
-            Write-Host -ForegroundColor Black -BackgroundColor White " X " -NoNewline
+            Write-Prompt "X"
             Write-Host " or " -NoNewline
-            Write-Host -ForegroundColor Black -BackgroundColor White " Exit " -NoNewline
+            Write-Prompt "Exit"
             Write-Host " to cancel"
             Write-Host `n
 
